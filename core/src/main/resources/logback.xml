@@ -5,9 +5,6 @@
         <resetJUL>true</resetJUL>
     </contextListener>
 
-    <!-- To enable JMX Management -->
-    <jmxConfigurator/>
-
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%.-1level|%-40.40logger{0}|%msg%n</pattern>
@@ -15,8 +12,8 @@
     </appender>
 
     <logger name="hamlog" level="debug"/>
-    <logger name="org.springframework" level="debug"/>
-    <logger name="org.springframework.beans" level="debug"/>
+    <logger name="org.springframework" level="info"/>
+    <logger name="org.springframework.beans" level="info"/>
 
     <root level="warn">
         <appender-ref ref="console"/>
