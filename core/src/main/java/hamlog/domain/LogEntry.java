@@ -4,13 +4,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Model of a QSO log.
  */
 @Entity
-public class LogEntry {
+public class LogEntry implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

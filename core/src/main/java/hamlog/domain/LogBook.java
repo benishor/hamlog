@@ -1,54 +1,54 @@
 package hamlog.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * A container of log entries for a given user.
  */
 @Entity
-public class LogBook {
+public class LogBook implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-	private String name;
-	@ManyToOne
-	private User owner;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    private String name;
 
-	public Long getId() {
-		return id;
-	}
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn
+    private User owner;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public User getOwner() {
-		return owner;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setOwner(User owner) {
-		this.owner = owner;
-	}
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
 
-	@Override
-	public String toString() {
-		return "LogBook{" +
-				"id=" + id +
-				", name='" + name + '\'' +
-				", owner=" + owner +
-				'}';
-	}
+    public User getOwner() {
+        return owner;
+    }
+
+
+    @Override
+    public String toString() {
+        return "LogBook{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", owner=" + owner +
+                '}';
+    }
 }

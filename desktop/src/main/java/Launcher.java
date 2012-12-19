@@ -5,8 +5,6 @@ import hamlog.service.UserService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.util.List;
-
 public class Launcher {
 
 	public static void main(String... args) {
@@ -14,17 +12,21 @@ public class Launcher {
 		UserService userService = applicationContext.getBean(UserService.class);
 		LogService logService = applicationContext.getBean(LogService.class);
 
-		User newUser = createUser();
-		userService.add(newUser);
+		User user = createUser();
+		userService.add(user);
 
-		logService.addLogToUser(createLogBook("First logbook"), newUser);
-		logService.addLogToUser(createLogBook("Second logbook"), newUser);
-		logService.addLogToUser(createLogBook("Third logbook"), newUser);
+		logService.addLogToUser(createLogBook("First logbook"), user);
+		logService.addLogToUser(createLogBook("Second logbook"), user);
+		logService.addLogToUser(createLogBook("Third logbook"), user);
 
-		for (User user : userService.getAllUsers()) {
-			System.out.println(user);
-			System.out.println(logService.getUserLogs(user));
+		for (User owner : userService.getAllUsers()) {
+			System.out.println(owner);
+            for (LogBook logBook : logService.getUserLogs(owner)) {
+                System.out.println(logBook);
+            }
 		}
+
+        userService.delete(user);
 	}
 
 	private static LogBook createLogBook(String name) {

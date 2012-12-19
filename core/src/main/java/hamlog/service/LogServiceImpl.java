@@ -33,10 +33,14 @@ public class LogServiceImpl implements LogService {
 			throw new IllegalArgumentException("User cannot be null");
 		}
 
-		logBook.setOwner(user);
-		logBookRepository.save(logBook);
-
-		return logBook;
+        User owner = userRepository.findOne(user.getId());
+        if (owner != null) {
+            logBook.setOwner(owner);
+            logBookRepository.save(logBook);
+            return logBook;
+        } else {
+            return null;
+        }
 	}
 
 	@Override

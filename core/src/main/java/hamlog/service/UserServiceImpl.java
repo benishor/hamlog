@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
 	@Autowired
@@ -25,4 +26,10 @@ public class UserServiceImpl implements UserService {
 	public List<User> getAllUsers() {
 		return userRepository.findAll();
 	}
+
+    @Override
+    @Transactional
+    public void delete(User user) {
+        userRepository.delete(user.getId());
+    }
 }
