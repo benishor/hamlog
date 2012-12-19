@@ -29,8 +29,8 @@ public interface UserService {
 	 *
 	 * @param id the id of the user to be deleted
 	 * @return the deleted user
-	 * @throws hamlog.service.exceptions.UserNotFoundException
-	 *          if the matching user cannot be found
+	 * @throws UserNotFoundException    if the matching user cannot be found
+	 * @throws IllegalArgumentException if the provided id is <code>null</code>
 	 */
 	User delete(Long id) throws UserNotFoundException;
 
@@ -46,14 +46,16 @@ public interface UserService {
 	 *
 	 * @param id the id of the user to be retrieved
 	 * @return the user with the given id or <code>null</code> if no match found
+	 * @throws IllegalArgumentException if the provided id is <code>null</code>
 	 */
 	User findById(Long id);
 
 	/**
-	 * Retrieves the user with the provided callsign or <code>null</code> if no matching user can be found.
+	 * Retrieves the user with the provided callsign or <code>null</code> if no match can be found. The match is case-insensitive.
 	 *
 	 * @param callsign the callsign of the user to be retrieved
 	 * @return the user with the given callsign or <code>null</code> if no match found
+	 * @throws IllegalArgumentException if the provided callsign is null
 	 */
 	User findByCallsign(String callsign);
 
@@ -62,8 +64,9 @@ public interface UserService {
 	 *
 	 * @param updated the information of the updated user
 	 * @return the updated user
-	 * @throws UserNotFoundException  if no user is found with the given id
-	 * @throws DuplicateUserException if the update would create a duplicate user
+	 * @throws UserNotFoundException    if no user is found with the given id
+	 * @throws DuplicateUserException   if the update would create a duplicate user
+	 * @throws IllegalArgumentException if the provided dto is <code>null</code>
 	 */
 	User update(UserDto updated) throws UserNotFoundException, DuplicateUserException;
 }

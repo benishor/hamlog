@@ -8,7 +8,6 @@ import hamlog.service.exceptions.DuplicateUserException;
 import hamlog.service.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,7 +39,7 @@ public class UserServiceImpl implements UserService {
 		user.setFirstName(userDto.getFirstName());
 		user.setLastName(userDto.getLastName());
 		try {
-			userRepository.save(user);
+			userRepository.saveAndFlush(user);
 			return user;
 		} catch (DataIntegrityViolationException e) {
 			throw new DuplicateUserException(e);
@@ -50,6 +49,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public User delete(Long id) throws UserNotFoundException {
+		if (id == null) {
+			throw new IllegalArgumentException("Provided user id cannot be null");
+		}
+
 		User deleted = userRepository.findOne(id);
 		if (deleted != null) {
 			userRepository.delete(deleted);
@@ -66,29 +69,39 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User findById(Long id) {
+		if (id == null) {
+			throw new IllegalArgumentException("Provided id cannot be null");
+		}
 		return userRepository.findOne(id);
 	}
 
 	@Override
 	public User findByCallsign(String callsign) {
+		if (callsign == null) {
+			throw new IllegalArgumentException("Provided callsign cannot be null");
+		}
 		return userRepository.findByCallsign(callsign);
 	}
 
 	@Override
 	@Transactional
 	public User update(UserDto updated) throws UserNotFoundException, DuplicateUserException {
+		if (updated == null) {
+			throw new IllegalArgumentException("Provided userDto cannot be null");
+		}
+
 		User user = userRepository.findOne(updated.getId());
 		if (user == null) {
 			throw new UserNotFoundException();
 		} else {
+			user.setFirstName(updated.getFirstName());
+			user.setLastName(updated.getLastName());
+			user.setCallsign(updated.getCallsign());
+			user.setPassword(updated.getPassword());
 			try {
-				user.setFirstName(updated.getFirstName());
-				user.setLastName(updated.getLastName());
-				user.setCallsign(updated.getCallsign());
-				user.setPassword(updated.getPassword());
-				userRepository.save(user);
+				userRepository.saveAndFlush(user);
 				return user;
-			} catch (DuplicateKeyException e) {
+			} catch (DataIntegrityViolationException e) {
 				throw new DuplicateUserException(e);
 			}
 		}
