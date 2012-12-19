@@ -1,5 +1,7 @@
 import hamlog.domain.LogBook;
 import hamlog.domain.User;
+import hamlog.dto.LogBookDto;
+import hamlog.dto.UserDto;
 import hamlog.service.LogService;
 import hamlog.service.UserService;
 import org.springframework.context.ApplicationContext;
@@ -8,39 +10,40 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class Launcher {
 
 	public static void main(String... args) {
+
 		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath*:/META-INF/spring/applicationContext.xml");
 		UserService userService = applicationContext.getBean(UserService.class);
 		LogService logService = applicationContext.getBean(LogService.class);
 
-		User user = createUser();
-		userService.add(user);
+		UserDto userDto = createUserDto();
+		User user = userService.create(userDto);
 
-		logService.addLogToUser(createLogBook("First logbook"), user);
-		logService.addLogToUser(createLogBook("Second logbook"), user);
-		logService.addLogToUser(createLogBook("Third logbook"), user);
+		logService.createLogBookForUser(createLogBookDto("First logbook"), user.getId());
+		logService.createLogBookForUser(createLogBookDto("Second logbook"), user.getId());
+		logService.createLogBookForUser(createLogBookDto("Third logbook"), user.getId());
 
-		for (User owner : userService.getAllUsers()) {
+		for (User owner : userService.findAll()) {
 			System.out.println(owner);
-            for (LogBook logBook : logService.getUserLogs(owner)) {
-                System.out.println(logBook);
-            }
+			for (LogBook logBook : logService.getLogBooksForUser(owner.getId())) {
+				System.out.println(logBook);
+			}
 		}
 
-        userService.delete(user);
+		userService.delete(user.getId());
 	}
 
-	private static LogBook createLogBook(String name) {
-		LogBook logBook = new LogBook();
+	private static LogBookDto createLogBookDto(String name) {
+		LogBookDto logBook = new LogBookDto();
 		logBook.setName(name);
 		return logBook;
 	}
 
-	private static User createUser() {
-		User newUser = new User();
-		newUser.setCallsign("YO6SSW");
-		newUser.setFirstName("Adrian");
-		newUser.setLastName("Scripcă");
-		newUser.setPassword("parolă");
-		return newUser;
+	private static UserDto createUserDto() {
+		UserDto user = new UserDto();
+		user.setCallsign("YO6SSW");
+		user.setFirstName("Adrian");
+		user.setLastName("Scripcă");
+		user.setPassword("parolă");
+		return user;
 	}
 }
