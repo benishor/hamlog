@@ -31,6 +31,9 @@ public class LogBookDto {
 
 	@Override
 	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
+		return "LogBookDto{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				'}';
 	}
 }

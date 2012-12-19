@@ -58,6 +58,12 @@ public class UserDto {
 
 	@Override
 	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
+		return "UserDto{" +
+				"id=" + id +
+				", callsign='" + callsign + '\'' +
+				", password='" + password + '\'' +
+				", firstName='" + firstName + '\'' +
+				", lastName='" + lastName + '\'' +
+				'}';
 	}
 }

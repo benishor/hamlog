@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * Declares methods used to obtain and modify user information.
+ *
  * @author Adrian Scripcă
  */
 public interface UserService {
@@ -18,7 +19,8 @@ public interface UserService {
 	 *
 	 * @param userDto data of the user to be created
 	 * @return the created user
-	 * @throws DuplicateUserException if the user to be created already exists
+	 * @throws DuplicateUserException   if the user to be created already exists
+	 * @throws IllegalArgumentException if the provided user information is <code>null</code>
 	 */
 	User create(UserDto userDto) throws DuplicateUserException;
 

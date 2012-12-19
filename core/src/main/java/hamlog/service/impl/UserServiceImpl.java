@@ -30,6 +30,10 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public User create(UserDto userDto) throws DuplicateUserException {
 
+		if (userDto == null) {
+			throw new IllegalArgumentException("Provided userDto cannot be null");
+		}
+
 		User user = new User();
 		user.setCallsign(userDto.getCallsign());
 		user.setPassword(userDto.getPassword());

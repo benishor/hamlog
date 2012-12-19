@@ -8,9 +8,10 @@ import hamlog.repository.UserRepository;
 import hamlog.service.LogService;
 import hamlog.service.exceptions.DuplicateLogBookException;
 import hamlog.service.exceptions.UserNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class LogServiceImpl implements LogService {
 
+	private static final Logger logger = LoggerFactory.getLogger(LogServiceImpl.class);
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
@@ -30,8 +32,11 @@ public class LogServiceImpl implements LogService {
 
 	@Override
 	public LogBook createLogBookForUser(LogBookDto logBookDto, Long userId) throws UserNotFoundException, DuplicateLogBookException {
+		logger.info("Creating logbook with details {} for user with id {}", logBookDto, userId);
+
 		User user = userRepository.findOne(userId);
 		if (user == null) {
+			logger.info("User with id {} not found", userId);
 			throw new UserNotFoundException();
 		} else {
 			try {
@@ -39,8 +44,10 @@ public class LogServiceImpl implements LogService {
 				logBook.setName(logBookDto.getName());
 				logBook.setOwner(user);
 				logBookRepository.save(logBook);
+				logger.info("Logbook created with id {}", logBook.getId());
 				return logBook;
 			} catch (DataIntegrityViolationException e) {
+				logger.warn("Failed to create logbook. Reason: {}", e.getMessage());
 				throw new DuplicateLogBookException(e);
 			}
 		}
