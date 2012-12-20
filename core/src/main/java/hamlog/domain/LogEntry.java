@@ -1,9 +1,12 @@
 package hamlog.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -20,13 +23,18 @@ public class LogEntry implements Serializable {
 	private Date startDate;
 	private Date endDate;
 	private String frequency;
-	private String mode;
+	private Band band;
+	private Mode myMode;
+	private Mode hisMode;
 	private String rstReceived;
 	private String rstSent;
 	private String operator;
 	private String qth;
 	private String comments;
 	private String contestCode;
+	@ManyToOne(cascade = CascadeType.ALL, optional = false)
+	@JoinColumn(nullable = false)
+	private LogBook logBook;
 
 	public Long getId() {
 		return id;
@@ -68,12 +76,28 @@ public class LogEntry implements Serializable {
 		this.frequency = frequency;
 	}
 
-	public String getMode() {
-		return mode;
+	public Mode getMyMode() {
+		return myMode;
 	}
 
-	public void setMode(String mode) {
-		this.mode = mode;
+	public void setMyMode(Mode mode) {
+		this.myMode = mode;
+	}
+
+	public Mode getHisMode() {
+		return hisMode;
+	}
+
+	public void setHisMode(Mode hisMode) {
+		this.hisMode = hisMode;
+	}
+
+	public Band getBand() {
+		return band;
+	}
+
+	public void setBand(Band band) {
+		this.band = band;
 	}
 
 	public String getRstReceived() {
@@ -124,6 +148,14 @@ public class LogEntry implements Serializable {
 		this.contestCode = contestCode;
 	}
 
+	public LogBook getLogBook() {
+		return logBook;
+	}
+
+	public void setLogBook(LogBook logBook) {
+		this.logBook = logBook;
+	}
+
 	@Override
 	public String toString() {
 		return "LogEntry{" +
@@ -132,7 +164,9 @@ public class LogEntry implements Serializable {
 				", startDate=" + startDate +
 				", endDate=" + endDate +
 				", frequency='" + frequency + '\'' +
-				", mode='" + mode + '\'' +
+				", band=" + band +
+				", myMode='" + myMode + '\'' +
+				", hisMode='" + hisMode + '\'' +
 				", rstReceived='" + rstReceived + '\'' +
 				", rstSent='" + rstSent + '\'' +
 				", operator='" + operator + '\'' +

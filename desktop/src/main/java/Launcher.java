@@ -1,11 +1,23 @@
+import hamlog.domain.Band;
 import hamlog.domain.LogBook;
+import hamlog.domain.LogEntry;
+import hamlog.domain.Mode;
 import hamlog.domain.User;
 import hamlog.dto.LogBookDto;
 import hamlog.dto.UserDto;
+import hamlog.repository.LogEntryRepository;
 import hamlog.service.LogService;
 import hamlog.service.UserService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
+import javax.persistence.criteria.Order;
+import java.util.Date;
+import java.util.List;
 
 public class Launcher {
 
@@ -15,19 +27,40 @@ public class Launcher {
 		UserService userService = applicationContext.getBean(UserService.class);
 		LogService logService = applicationContext.getBean(LogService.class);
 
+		LogEntryRepository logEntryRepository = applicationContext.getBean(LogEntryRepository.class);
+
 		UserDto userDto = createUserDto();
 		User user = userService.create(userDto);
 
-		logService.createLogBookForUser(createLogBookDto("First logbook"), user.getId());
-		logService.createLogBookForUser(createLogBookDto("Second logbook"), user.getId());
-		logService.createLogBookForUser(createLogBookDto("Third logbook"), user.getId());
+		LogBook log = logService.createLogBookForUser(createLogBookDto("First logbook"), user.getId());
+		for (int i = 0; i < 11; i++) {
+			LogEntry entry = new LogEntry();
+			entry.setCallsign("YO8SS");
+			entry.setStartDate(new Date());
+			entry.setBand(Band.HF_40M);
+			entry.setMyMode(Mode.CW);
+			entry.setHisMode(Mode.CW);
+			entry.setRstReceived("599");
+			entry.setRstSent("599");
+			entry.setLogBook(log);
 
-		for (User owner : userService.findAll()) {
-			System.out.println(owner);
-			for (LogBook logBook : logService.getLogBooksForUser(owner.getId())) {
-				System.out.println(logBook);
-			}
+			logService.addEntryToLogBook(entry, log.getId());
 		}
+
+//		List<LogEntry> entries = logEntryRepository.findLogEntriesForLogBook(log.getId());
+//		for (LogEntry entry : entries) {
+//			System.out.println(entry);
+//		}
+
+		final PageRequest pageRequest = new PageRequest(0, 2, new Sort(Sort.Direction.ASC, "startDate"));
+		Page<LogEntry> entryPage = logEntryRepository.findLogEntriesForLogBook(log.getId(), pageRequest);
+		for (LogEntry entry : entryPage.getContent()) {
+			System.out.println(entry);
+		}
+
+
+
+
 
 		userService.delete(user.getId());
 	}

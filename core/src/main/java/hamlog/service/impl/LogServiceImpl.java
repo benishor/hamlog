@@ -1,13 +1,16 @@
 package hamlog.service.impl;
 
 import hamlog.domain.LogBook;
+import hamlog.domain.LogEntry;
 import hamlog.domain.User;
 import hamlog.dto.LogBookDto;
 import hamlog.mappers.DtoConverter;
 import hamlog.repository.LogBookRepository;
+import hamlog.repository.LogEntryRepository;
 import hamlog.repository.UserRepository;
 import hamlog.service.LogService;
 import hamlog.service.exceptions.DuplicateLogBookException;
+import hamlog.service.exceptions.LogBookNotFoundException;
 import hamlog.service.exceptions.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +33,8 @@ public class LogServiceImpl implements LogService {
 	private UserRepository userRepository;
 	@Autowired
 	private LogBookRepository logBookRepository;
+	@Autowired
+	private LogEntryRepository logEntryRepository;
 
 	@Override
 	public LogBook createLogBookForUser(LogBookDto logBookDto, Long userId) throws UserNotFoundException, DuplicateLogBookException {
@@ -56,5 +61,24 @@ public class LogServiceImpl implements LogService {
 	@Override
 	public List<LogBook> getLogBooksForUser(Long userId) {
 		return logBookRepository.findLogbooksForUser(userId);
+	}
+
+	@Override
+	public LogEntry addEntryToLogBook(LogEntry logEntry, Long logBookId) throws LogBookNotFoundException {
+		if (logEntry == null) {
+			throw new IllegalArgumentException("Provided logEntry cannot be null");
+		}
+		if (logBookId == null) {
+			throw new IllegalArgumentException("Provided logBookId cannot be null");
+		}
+
+		LogBook logBook = logBookRepository.findOne(logBookId);
+		if (logBook != null) {
+			logEntry.setLogBook(logBook);
+			logEntryRepository.save(logEntry);
+			return logEntry;
+		} else {
+			throw new LogBookNotFoundException("LogBook with id " + logBookId + " could not be found");
+		}
 	}
 }

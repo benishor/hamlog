@@ -1,8 +1,10 @@
 package hamlog.service;
 
 import hamlog.domain.LogBook;
+import hamlog.domain.LogEntry;
 import hamlog.dto.LogBookDto;
 import hamlog.service.exceptions.DuplicateLogBookException;
+import hamlog.service.exceptions.LogBookNotFoundException;
 import hamlog.service.exceptions.UserNotFoundException;
 
 import java.util.List;
@@ -30,4 +32,14 @@ public interface LogService {
 	 * @return a list containing all logbooks owned by the provided user, or an empty list if no matches exist.
 	 */
 	List<LogBook> getLogBooksForUser(Long userId);
+
+	/**
+	 * Adds the current entry to the logbook with given id.
+	 *
+	 * @param logEntry  the QSO to be logged
+	 * @param logBookId the id of the logbook this entry should be added to
+	 * @return the updated QSO
+	 * @throws LogBookNotFoundException if the logbook with the given id could not be found
+	 */
+	LogEntry addEntryToLogBook(LogEntry logEntry, Long logBookId) throws LogBookNotFoundException;
 }
