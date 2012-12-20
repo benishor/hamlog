@@ -2,6 +2,7 @@ package hamlog.service.impl;
 
 import hamlog.domain.User;
 import hamlog.dto.UserDto;
+import hamlog.mappers.DtoConverter;
 import hamlog.repository.UserRepository;
 import hamlog.service.UserService;
 import hamlog.service.exceptions.DuplicateUserException;
@@ -28,17 +29,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public User create(UserDto userDto) throws DuplicateUserException {
-
 		if (userDto == null) {
 			throw new IllegalArgumentException("Provided userDto cannot be null");
 		}
 
-		User user = new User();
-		user.setCallsign(userDto.getCallsign());
-		user.setPassword(userDto.getPassword());
-		user.setFirstName(userDto.getFirstName());
-		user.setLastName(userDto.getLastName());
 		try {
+			User user = DtoConverter.convert(userDto);
 			userRepository.saveAndFlush(user);
 			return user;
 		} catch (DataIntegrityViolationException e) {
@@ -94,11 +90,8 @@ public class UserServiceImpl implements UserService {
 		if (user == null) {
 			throw new UserNotFoundException();
 		} else {
-			user.setFirstName(updated.getFirstName());
-			user.setLastName(updated.getLastName());
-			user.setCallsign(updated.getCallsign());
-			user.setPassword(updated.getPassword());
 			try {
+				DtoConverter.convert(updated, user);
 				userRepository.saveAndFlush(user);
 				return user;
 			} catch (DataIntegrityViolationException e) {

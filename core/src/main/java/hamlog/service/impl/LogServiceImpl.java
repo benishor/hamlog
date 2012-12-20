@@ -3,6 +3,7 @@ package hamlog.service.impl;
 import hamlog.domain.LogBook;
 import hamlog.domain.User;
 import hamlog.dto.LogBookDto;
+import hamlog.mappers.DtoConverter;
 import hamlog.repository.LogBookRepository;
 import hamlog.repository.UserRepository;
 import hamlog.service.LogService;
@@ -40,8 +41,7 @@ public class LogServiceImpl implements LogService {
 			throw new UserNotFoundException();
 		} else {
 			try {
-				LogBook logBook = new LogBook();
-				logBook.setName(logBookDto.getName());
+				LogBook logBook = DtoConverter.convert(logBookDto);
 				logBook.setOwner(user);
 				logBookRepository.save(logBook);
 				logger.info("Logbook created with id {}", logBook.getId());
