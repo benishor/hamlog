@@ -8,56 +8,65 @@
         <param-value>false</param-value>
     </context-param>
 
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/applicationContext.xml</param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
     <session-config>  <!--  10 minutes -->
         <session-timeout>10</session-timeout>
     </session-config>
 
     <!--<servlet>-->
-        <!--<display-name>Servlet1</display-name>-->
-        <!--<servlet-name>Servlet1</servlet-name>-->
-        <!--<servlet-class>test.Servlet1</servlet-class>-->
-        <!--<init-param>-->
-            <!--<param-name>sleep-time-in-seconds</param-name>-->
-            <!--<param-value>10</param-value>-->
-        <!--</init-param>-->
-        <!--<load-on-startup>1</load-on-startup>-->
+    <!--<display-name>Servlet1</display-name>-->
+    <!--<servlet-name>Servlet1</servlet-name>-->
+    <!--<servlet-class>test.Servlet1</servlet-class>-->
+    <!--<init-param>-->
+    <!--<param-name>sleep-time-in-seconds</param-name>-->
+    <!--<param-value>10</param-value>-->
+    <!--</init-param>-->
+    <!--<load-on-startup>1</load-on-startup>-->
     <!--</servlet>-->
 
     <!--<servlet-mapping>-->
-        <!--<servlet-name>Servlet1</servlet-name>-->
-        <!--<url-pattern>/Servlet1</url-pattern>-->
+    <!--<servlet-name>Servlet1</servlet-name>-->
+    <!--<url-pattern>/Servlet1</url-pattern>-->
     <!--</servlet-mapping>-->
 
     <!--<env-entry>-->
-        <!--<description>admin email</description>-->
-        <!--<env-entry-name>adminEmail</env-entry-name>-->
-        <!--<env-entry-value>admin@example.x</env-entry-value>-->
+    <!--<description>admin email</description>-->
+    <!--<env-entry-name>adminEmail</env-entry-name>-->
+    <!--<env-entry-value>admin@example.x</env-entry-value>-->
     <!--</env-entry>-->
 
     <!--<resource-ref>-->
-        <!--<res-ref-name>HRDS</res-ref-name>-->
-        <!--<res-type>javax.sql.DataSource</res-type>-->
-        <!--<mapped-name>jdbc/__default</mapped-name>-->
+    <!--<res-ref-name>HRDS</res-ref-name>-->
+    <!--<res-type>javax.sql.DataSource</res-type>-->
+    <!--<mapped-name>jdbc/__default</mapped-name>-->
     <!--</resource-ref>-->
 
     <!--<filter>-->
-        <!--<display-name>Filter1</display-name>-->
-        <!--<filter-name>Filter1</filter-name>-->
-        <!--<filter-class>Filter1</filter-class>-->
+    <!--<display-name>Filter1</display-name>-->
+    <!--<filter-name>Filter1</filter-name>-->
+    <!--<filter-class>Filter1</filter-class>-->
     <!--</filter>-->
 
     <!--<filter-mapping>-->
-        <!--<filter-name>Filter1</filter-name>-->
-        <!--<url-pattern>/Filter1</url-pattern>-->
+    <!--<filter-name>Filter1</filter-name>-->
+    <!--<url-pattern>/Filter1</url-pattern>-->
     <!--</filter-mapping>-->
 
     <!--<filter-mapping>-->
-        <!--<filter-name>Filter1</filter-name>-->
-        <!--<servlet-name>Servlet1</servlet-name>-->
-        <!--<dispatcher>REQUEST</dispatcher>-->
-        <!--<dispatcher>FORWARD</dispatcher>-->
-        <!--<dispatcher>INCLUDE</dispatcher>-->
-        <!--<dispatcher>ERROR</dispatcher>-->
+    <!--<filter-name>Filter1</filter-name>-->
+    <!--<servlet-name>Servlet1</servlet-name>-->
+    <!--<dispatcher>REQUEST</dispatcher>-->
+    <!--<dispatcher>FORWARD</dispatcher>-->
+    <!--<dispatcher>INCLUDE</dispatcher>-->
+    <!--<dispatcher>ERROR</dispatcher>-->
     <!--</filter-mapping>-->
 
     <welcome-file-list>
