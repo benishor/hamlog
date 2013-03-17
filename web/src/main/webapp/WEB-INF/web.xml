@@ -8,13 +8,18 @@
         <param-value>false</param-value>
     </context-param>
 
+    <!-- Load spring context -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>/WEB-INF/applicationContext.xml</param-value>
     </context-param>
-
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <!-- Bootstrap application, load services, etc-->
+    <listener>
+        <listener-class>hamlog.web.listeners.ApplicationBootstrapListener</listener-class>
     </listener>
 
     <session-config>  <!--  10 minutes -->
