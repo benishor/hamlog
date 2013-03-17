@@ -37,6 +37,12 @@
             <artifactId>spring-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- This solves the issue mentioned here: http://forum.springsource.org/showthread.php?134494-NoUniqueBeanDefinitionException-problem -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>3.1.1.RELEASE</version>
+        </dependency>
 
         <!-- Persistence -->
         <dependency>
