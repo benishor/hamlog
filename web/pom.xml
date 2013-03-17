@@ -73,7 +73,7 @@
             <id>openshift</id>
             <properties>
                 <db.driver>com.mysql.jdbc.Driver</db.driver>
-                <db.url>jdbc:mysql://$OPENSHIFT_MYSQL_DB_HOST:$OPENSHIFT_MYSQL_DB_PORT/hamlog?useUnicode=true&amp;characterEncoding=utf-8</db.url>
+                <db.url>jdbc:mysql://127.5.119.1:3306/hamlog?useUnicode=true&amp;characterEncoding=utf-8</db.url>
                 <db.username>admin2ZXUIgr</db.username>
                 <db.password>TtJHAdkkAa9K</db.password>
                 <db.persistenceDialect>MYSQL</db.persistenceDialect>
