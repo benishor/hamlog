@@ -11,12 +11,14 @@ import hamlog.domain.Mode;
 import hamlog.domain.User;
 import hamlog.dto.LogBookDto;
 import hamlog.dto.UserDto;
+import hamlog.mappers.DtoConverter;
 import hamlog.repository.LogEntryRepository;
 import hamlog.service.LogService;
 import hamlog.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -49,35 +51,34 @@ public class ApplicationBootstrapListener implements ServletContextListener, Htt
 	}
 
 	public void contextInitialized(ServletContextEvent sce) {
-		final WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(sce.getServletContext());
-
-		UserService userService = applicationContext.getBean(UserService.class);
-		LogService logService = applicationContext.getBean(LogService.class);
-		LogEntryRepository logEntryRepository = applicationContext.getBean(LogEntryRepository.class);
-
-		UserDto userDto = createUserDto();
-		User user = userService.create(userDto);
-
-		LogBook log = logService.createLogBookForUser(createLogBookDto("First logbook"), user.getId());
-		for (int i = 0; i < 11; i++) {
-			LogEntry entry = new LogEntry();
-			entry.setCallsign("YO8SS");
-			entry.setStartDate(new Date());
-			entry.setBand(Band.HF_40M);
-			entry.setMyMode(Mode.CW);
-			entry.setHisMode(Mode.CW);
-			entry.setRstReceived("599");
-			entry.setRstSent("599");
-			entry.setLogBook(log);
-
-			logService.addEntryToLogBook(entry, log.getId());
-		}
-
-		final PageRequest pageRequest = new PageRequest(0, 2, new Sort(Sort.Direction.ASC, "startDate"));
-		Page<LogEntry> entryPage = logEntryRepository.findLogEntriesForLogBook(log.getId(), pageRequest);
-		for (LogEntry entry : entryPage.getContent()) {
-			System.out.println(entry);
-		}
+//		final WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(sce.getServletContext());
+//		UserService userService = applicationContext.getBean(UserService.class);
+//		LogService logService = applicationContext.getBean(LogService.class);
+//		LogEntryRepository logEntryRepository = applicationContext.getBean(LogEntryRepository.class);
+//
+//		UserDto userDto = createUserDto();
+//		User user = userService.create(userDto);
+//
+//		LogBook log = logService.createLogBookForUser(createLogBookDto("First logbook"), user.getId());
+//		for (int i = 0; i < 11; i++) {
+//			LogEntry entry = new LogEntry();
+//			entry.setCallsign("YO8SS");
+//			entry.setStartDate(new Date());
+//			entry.setBand(Band.HF_40M);
+//			entry.setMyMode(Mode.CW);
+//			entry.setHisMode(Mode.CW);
+//			entry.setRstReceived("599");
+//			entry.setRstSent("599");
+//			entry.setLogBook(log);
+//
+//			logService.addEntryToLogBook(entry, log.getId());
+//		}
+//
+//		final PageRequest pageRequest = new PageRequest(0, 2, new Sort(Sort.Direction.ASC, "startDate"));
+//		Page<LogEntry> entryPage = logEntryRepository.findLogEntriesForLogBook(log.getId(), pageRequest);
+//		for (LogEntry entry : entryPage.getContent()) {
+//			System.out.println(entry);
+//		}
 	}
 
 	public void contextDestroyed(ServletContextEvent sce) {
